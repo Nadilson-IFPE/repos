@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
 import { useParams } from "react-router";
 import api from "../../services/api";
-import { Container } from "../Main/styles";
+import { Container, Owner, Loading, BackButton } from "./styles";
 
 export default function Repositorio() {
     const { repositorio } = useParams();
 
     const [repository, setRepository] = useState({});
-    const [issues, setissues] = useState([]);
+    const [issues, setIssues] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -29,18 +30,36 @@ export default function Repositorio() {
           //  console.log(issuesData.data);
           
           setRepository(repositorioData.data);
-          setissues(issues.data);
+          setIssues(issuesData.data);
           setLoading(false);
 
         }
 
         load();
 
-    }, []);
+    }, [repositorio]);
+
+  if (loading) {
+      return(
+          <Loading>
+              <h1>Carregando...</h1>
+          </Loading>
+      )
+  }  
 
   return (
     <Container>
-         
+         <BackButton to="/">
+             <FaArrowLeft color="#000" size={30} />
+         </BackButton>
+         <Owner>
+             <img src={repository.owner.avatar_url} 
+             alt={repository.owner.login} 
+             />
+
+             <h1>{repository.name}</h1>
+             <p>{repository.description}</p>
+         </Owner>
     </Container>
   );
 }
