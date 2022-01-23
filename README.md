@@ -2,7 +2,7 @@
 
 TO-DO
 
-###Obs.: No commit "Página com detalhes dos repositórios" foi realizado um downgrade no react-router-dom versão 6 para a versão 5.x. A versão 6.x tem problemas com match e a página index.js da pasta Repositorio não renderiza mais com o seguinte código:
+### Obs.: No commit "Página com detalhes dos repositórios" foi realizado um downgrade no react-router-dom versão 6 para a versão 5.x. A versão 6.x tem problemas com match e a página index.js da pasta Repositorio não renderiza mais com o seguinte código:
 
 export default function Repositorio({match}) {
     return(
@@ -12,7 +12,7 @@ export default function Repositorio({match}) {
     )
 }
 
-###Após o downgrade, o código de rotas.js foi alterado de:
+### Após o downgrade, o código de rotas.js foi alterado de:
 
  export default function Rotas() {
   return (
@@ -25,7 +25,7 @@ export default function Repositorio({match}) {
   );
 
 
-###para:
+### para:
 
 export default function Rotas() {
   return (
@@ -38,10 +38,10 @@ export default function Rotas() {
   );
 }
 
-###e a página voltou a ser renderizada como esperado.
+### e a página voltou a ser renderizada como esperado.
 
 
-###Outra solução, caso não seja desejado um downgrade no react-router-dom, seria manter o código de rotas.js como: 
+### Outra solução, caso não seja desejado um downgrade no react-router-dom, seria manter o código de rotas.js como: 
 
 
 export default function Rotas() {
@@ -55,7 +55,7 @@ export default function Rotas() {
   );
 
 
-###e alterar o código do index.js na pasta Repositorio para:
+### e alterar o código do index.js na pasta Repositorio para:
 
 
 export default function Repositorio() {
