@@ -1,9 +1,13 @@
-import React from 'react';
-import Rotas from './rotas';
+import React from "react";
+import Rotas from "./rotas";
+import GlobalStyle from "./styles/global";
 
 function App() {
   return (
+    <>
+      <GlobalStyle />
       <Rotas />
+    </>
   );
 }
 
