@@ -1,4 +1,4 @@
-# Projeto REPOS (NextJS)
+# Projeto REPOS (ReactJS)
 
 TO-DO
 
