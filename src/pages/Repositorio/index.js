@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useParams } from "react-router";
 import api from "../../services/api";
-import { Container, Owner, Loading, BackButton, IssuesList } from "./styles";
+import { Container, Owner, Loading, BackButton, IssuesList, PageActions } from "./styles";
 
 export default function Repositorio() {
     const { repositorio } = useParams();
@@ -10,6 +10,7 @@ export default function Repositorio() {
     const [repository, setRepository] = useState({});
     const [issues, setIssues] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         async function load() {
@@ -39,29 +40,54 @@ export default function Repositorio() {
 
     }, [repositorio]);
 
-  if (loading) {
+
+    useEffect(() => {
+
+        async function loadIssue() {
+            const nomeRepo = decodeURIComponent(repositorio);
+
+            const response = await api.get(`/repos/${nomeRepo}/issues`, {
+              params: {
+                  state: 'open',
+                  page,
+                  per_page: 5,
+              },
+            });
+
+            setIssues(response.data);
+        }
+
+        loadIssue();
+
+    }, [repositorio, page]);
+
+    function handlePage(action) {
+        setPage(action === 'back' ? page - 1 : page + 1);
+    }
+
+    if (loading) {
       return(
           <Loading>
               <h1>Carregando...</h1>
           </Loading>
       )
-  }  
+    }  
 
-  return (
-    <Container>
-         <BackButton to="/">
-             <FaArrowLeft color="#000" size={30} />
-         </BackButton>
-         <Owner>
+    return (
+        <Container>
+           <BackButton to="/">
+               <FaArrowLeft color="#000" size={30} />
+           </BackButton>
+           <Owner>
              <img src={repository.owner.avatar_url} 
              alt={repository.owner.login} 
              />
 
              <h1>{repository.name}</h1>
              <p>{repository.description}</p>
-         </Owner>
+           </Owner>
 
-         <IssuesList>
+           <IssuesList>
              {issues.map(issue => (
                  <li key={String(issue.id)}>
                      <img src={issue.user.avatar_url} alt={issue.user.login} />
@@ -79,7 +105,18 @@ export default function Repositorio() {
                      </div>
                  </li>
              ))}
-         </IssuesList>
-    </Container>
-  );
+           </IssuesList>
+
+           <PageActions>
+             <button type="button" onClick={() => handlePage('back')}
+             disabled={page < 2}>
+                 Voltar
+             </button>
+
+             <button type="button" onClick={() => handlePage('next') }>
+                 Próxima
+             </button>
+           </PageActions>
+        </Container>
+    );
 }
